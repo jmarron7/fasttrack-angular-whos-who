@@ -12,7 +12,7 @@ const TOKEN_KEY = "whos-who-access-token";
 })
 export class HomeComponent implements OnInit {
   constructor() {}
-
+  testArr = new Set<any>()
   genres: String[] = ["House", "Alternative", "J-Rock", "R&B"];
   selectedGenre: String = "";
   authLoading: boolean = false;
@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
       this.authLoading = false;
       this.token = newToken.value;
       this.loadGenres(newToken.value);
+      
     });
   }
 
@@ -60,5 +61,36 @@ export class HomeComponent implements OnInit {
     this.selectedGenre = selectedGenre;
     console.log(this.selectedGenre);
     console.log(TOKEN_KEY);
+  }
+
+  getTrack = async (t: any) => {
+    console.log("loadTrack()")
+    this.configLoading = true;
+
+    for (let i = 0; i < 10; i++) {
+      const searchQuery = this.createSearchQuery()
+      console.log(searchQuery)
+      const response = await fetchFromSpotify({
+        token: t,
+        endpoint: searchQuery
+      });
+      console.log(response)
+      for (let track of response.tracks.items) {
+        this.testArr.add(track.name)
+      }
+      console.log(this.testArr)
+    }
+}
+
+  handleClick() {
+    this.getTrack(this.token);
+  }
+
+  createSearchQuery(): string {
+
+    const randomOffset = Math.floor(Math.random() * 500)
+    const searchQuery = 'search?q=genre%3A' + this.selectedGenre + '&type=track&offset=' + randomOffset + "&limit=1"
+
+    return searchQuery;
   }
 }
