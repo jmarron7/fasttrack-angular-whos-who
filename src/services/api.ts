@@ -48,6 +48,7 @@ export const request = (url: any, options?: any) => {
 };
 
 const fetchFromSpotify = ({ token, endpoint, params }: any) => {
+  console.log("fetchFromSpotify()")
   let url = [SPOTIFY_ROOT, endpoint].join("/");
   if (params) {
     const paramString = toPairs(params)
