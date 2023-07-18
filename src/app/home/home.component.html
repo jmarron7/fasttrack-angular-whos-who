@@ -1,11 +1,14 @@
+<h1>Whos's Who</h1>
+<h3>Can you guess the singer?</h3>
 <div *ngIf="authLoading || configLoading">Loading...</div>
 <div *ngIf="!authLoading && !configLoading">
-  Genre:
+  <p>Genre:</p>
   <select [(ngModel)]="selectedGenre" (ngModelChange)="setGenre($event)">
     <option [value]=""></option>
     <option [value]="genre" *ngFor="let genre of genres">
       {{ genre }}
     </option>
   </select>
+  <p>Artists per Guess:</p>
 </div>
-<button (click)="handleClick()">Click</button>
+<button (click)="handleClick()">Start Game</button>
