@@ -12,9 +12,16 @@ const TOKEN_KEY = "whos-who-access-token";
 })
 export class HomeComponent implements OnInit {
   constructor() {}
-  testArr = new Set<any>()
-  genres: String[] = ["House", "Alternative", "J-Rock", "R&B"];
+
+  game: any = {
+    correct_tracks: new Set<any>(),
+    rounds: []
+  };
+  numberOfRounds = 1;
+  numberOfArtists = 2;
   selectedGenre: String = "";
+  genres: string[] = [];
+
   authLoading: boolean = false;
   configLoading: boolean = false;
   token: String = "";
@@ -42,7 +49,6 @@ export class HomeComponent implements OnInit {
       this.authLoading = false;
       this.token = newToken.value;
       this.loadGenres(newToken.value);
-      
     });
   }
 
@@ -63,27 +69,56 @@ export class HomeComponent implements OnInit {
     console.log(TOKEN_KEY);
   }
 
-  getTrack = async (t: any) => {
-    console.log("loadTrack()")
+  handleClick() {
+    this.assembleGameData(this.token)
+    console.log(this.game);
+  }
+
+  assembleGameData = async (t: any) => {
     this.configLoading = true;
 
-    for (let i = 0; i < 10; i++) {
-      const searchQuery = this.createSearchQuery()
-      console.log(searchQuery)
+    while (this.game.rounds.length < this.numberOfRounds) {
       const response = await fetchFromSpotify({
         token: t,
-        endpoint: searchQuery
+        endpoint: this.createSearchQuery()
       });
-      console.log(response)
-      for (let track of response.tracks.items) {
-        this.testArr.add(track.name)
+      
+      if (response.tracks.items[0].preview_url === null) {
+        continue;
       }
-      console.log(this.testArr)
-    }
-}
 
-  handleClick() {
-    this.getTrack(this.token);
+      let track = {
+        artist_name: response.tracks.items[0].artists[0].name,
+        preview_url: response.tracks.items[0].preview_url,
+        track_name: response.tracks.items[0].name
+      }
+      this.game.correct_tracks.add(track);
+
+      let artists = new Set<any>();
+      
+      let pic_url = '';
+      try {
+        pic_url = response.tracks.items[0].artists[0].images[0].url;
+      } catch (e) {
+        console.error('no image found')
+      }
+      let correct_artist = {
+        name: track.artist_name,
+        pic_url: pic_url
+      }
+      artists.add(correct_artist);
+
+      let wrongArtists = this.getWrongArtists(this.token, track.artist_name);
+      (await wrongArtists).forEach((artist) => artists.add(artist));
+
+      let round = {
+        artist_set: artists,
+        track: track,
+        correct: track.artist_name,
+        guessed: ''
+      }
+      this.game.rounds.push(round);
+    }
   }
 
   createSearchQuery(): string {
@@ -92,5 +127,37 @@ export class HomeComponent implements OnInit {
     const searchQuery = 'search?q=genre%3A' + this.selectedGenre + '&type=track&offset=' + randomOffset + "&limit=1"
 
     return searchQuery;
+  }
+
+  getWrongArtists = async (t: any, provided_name: string) => {
+    this.configLoading = true;
+
+    let artist_set = new Set<any>();
+    while (artist_set.size < this.numberOfArtists) {
+      const response = await fetchFromSpotify({
+        token: t,
+        endpoint: this.createSearchQuery()
+      });
+
+      let artist_name = response.tracks.items[0].artists[0].name;
+    
+      if (artist_name === provided_name) {
+        continue;
+      }
+
+      let picture_url = '';
+      try {
+        picture_url = response.tracks.items[0].artists[0].images[0].url;
+      } catch (e) {
+        console.error('no image found')
+      }
+
+      let artist = {
+        name: artist_name,
+        pic_url: picture_url
+      }
+      artist_set.add(artist);
+    }
+    return artist_set;
   }
 }
