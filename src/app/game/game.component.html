@@ -1,4 +1,7 @@
 <div id="counters">
-    <div>round: 0/5</div>
-    <div>score: 0/5</div>
+    <div>round: {{ roundCount }}/{{ totalRounds }}</div>
+    <div>score: {{ score }}/{{ totalRounds }}</div>
+</div>
+<div id="options">
+    {{ game.rounds[0].track.artist_name }}
 </div>

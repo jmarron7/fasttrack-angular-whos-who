@@ -92,6 +92,7 @@ export class HomeComponent implements OnInit {
   selectedGenre: String = "";
   authLoading: boolean = false;
   configLoading: boolean = false;
+  gameLoading: boolean = false;
   token: String = "";
   
   constructor(private router:Router) {}
@@ -188,15 +189,19 @@ export class HomeComponent implements OnInit {
 
   @Output() emitter:EventEmitter<any> = new EventEmitter();
 
+
   handleStartGame() {
-    this.assembleGameData(this.token)
-    console.log(this.game);
-    let navigationExtras: NavigationExtras = {
-      state: {
-        game: this.game
-      }
-    };
-    this.router.navigate(['/game'], navigationExtras);
+    this.gameLoading = true;
+    this.assembleGameData(this.token).then(() => {
+      console.log(this.game);
+      let navigationExtras: NavigationExtras = {
+        state: {
+          game: this.game
+        }
+      };
+      this.gameLoading = false;
+      this.router.navigate(['/game'], navigationExtras);
+    });
   }
 
   assembleGameData = async (t: any) => {

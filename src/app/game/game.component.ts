@@ -11,14 +11,18 @@ export class GameComponent implements OnInit {
     correct_tracks: new Set<any>(),
     rounds: []
   };
-  constructor(private router: Router) { 
-    console.log('hey!')
+  roundCount = 0;
+  totalRounds = 0;
+  score = 0;
+
+  constructor(private router: Router) {
     let input = this.router.getCurrentNavigation();
     this.game = input?.extras?.state?.['game'];
   }
 
   ngOnInit(): void {
     console.log(this.game);
+    this.totalRounds = this.game.rounds.length
   }
 
 }
