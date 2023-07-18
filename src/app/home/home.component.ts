@@ -87,8 +87,8 @@ export class HomeComponent implements OnInit {
   apiCallLimit = 45;
   apiCallCount = 0;
   errorMessage = '';
-  numberOfRounds = 2;
-  numberOfArtists = 3;
+  numberOfRounds: number = 1
+  numberOfArtists: number = 2
   selectedGenre: String = "";
   authLoading: boolean = false;
   configLoading: boolean = false;
@@ -122,6 +122,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // SETTINGS FUNCTIONS
   increment(settingName: string) {
     HomeComponent.bind(this)
     if (this.settings.find((setting) => setting.name === settingName)) {
@@ -129,7 +130,9 @@ export class HomeComponent implements OnInit {
         if (setting.name === settingName) {
           setting.amount = setting.amount < setting.max
             ? (setting.amount + 1)
-            : (setting.amount)
+            : (setting.amount);
+          
+          this.updateGameSettings(settingName)
         }
       })
     }
@@ -141,11 +144,29 @@ export class HomeComponent implements OnInit {
       this.settings.forEach((setting) => {
         if (setting.name === settingName) {
           setting.amount = setting.amount > setting.min ? (setting.amount - 1) : setting.amount
+          this.updateGameSettings(settingName)
         }
       })
     }
   }
 
+  updateGameSettings(settingName: string) {
+    if (this.settings.find((setting) => setting.name === settingName)) {
+      this.settings.forEach((setting) => {
+        if (setting.name === settingName) {
+          if(setting.name === "numOfRounds"){
+            this.numberOfRounds = setting.amount
+            console.log("Number of Rounds changed to " + this.numberOfRounds)
+          }
+          if(setting.name === "numOfChoices"){
+            this.numberOfArtists = setting.amount
+            console.log("Number of Artists changed to " + this.numberOfArtists)
+
+          }
+        }
+      })
+    }
+  }
   // loadGenres = async (t: any) => {
   //   this.configLoading = true;
   //   const response = await fetchFromSpotify({
@@ -165,7 +186,7 @@ export class HomeComponent implements OnInit {
     console.log(TOKEN_KEY);
   }
 
-  handleClick() {
+  handleStartGame() {
     this.assembleGameData(this.token)
     console.log(this.game);
   }
