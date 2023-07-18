@@ -13,14 +13,57 @@ const TOKEN_KEY = "whos-who-access-token";
 export class HomeComponent implements OnInit {
   constructor() {}
 
+  errorMessage = '';
   game: any = {
     correct_tracks: new Set<any>(),
     rounds: []
   };
-  numberOfRounds = 1;
-  numberOfArtists = 2;
+  apiCallLimit = 45;
+  apiCallCount = 0;
+  numberOfRounds = 2;
+  numberOfArtists = 3;
   selectedGenre: String = "";
-  genres: string[] = [];
+  genres: string[] = [
+    "alt-rock",
+    "alternative", 
+    "anime",
+    "black-metal",
+    "bluegrass",
+    "blues",
+    "classical",
+    "country",
+    "death-metal",
+    "disco",
+    "drum-and-bass",
+    "dubstep",
+    "edm",
+    "electronic",
+    "emo",
+    "folk",
+    "funk",
+    "gospel",
+    "grindcore",
+    "grunge",
+    "hard-rock",
+    "hardcore",
+    "hip-hop",
+    "house",
+    "indie",
+    "j-pop",
+    "j-rock",
+    "jazz",
+    "k-pop",
+    "metal",
+    "opera",
+    "pop",
+    "punk",
+    "r-n-b",
+    "reggae",
+    "reggaeton",
+    "rock",
+    "soul",
+    "techno"
+  ];
 
   authLoading: boolean = false;
   configLoading: boolean = false;
@@ -35,7 +78,7 @@ export class HomeComponent implements OnInit {
         console.log("Token found in localstorage");
         this.authLoading = false;
         this.token = storedToken.value;
-        this.loadGenres(storedToken.value);
+        // this.loadGenres(storedToken.value);
         return;
       }
     }
@@ -48,20 +91,22 @@ export class HomeComponent implements OnInit {
       localStorage.setItem(TOKEN_KEY, JSON.stringify(newToken));
       this.authLoading = false;
       this.token = newToken.value;
-      this.loadGenres(newToken.value);
+      // this.loadGenres(newToken.value);
     });
   }
 
-  loadGenres = async (t: any) => {
-    this.configLoading = true;
-    const response = await fetchFromSpotify({
-      token: t,
-      endpoint: "recommendations/available-genre-seeds",
-    });
-    console.log(response);
-    this.genres = response.genres;
-    this.configLoading = false;
-  };
+  // loadGenres = async (t: any) => {
+  //   this.configLoading = true;
+  //   const response = await fetchFromSpotify({
+  //     token: t,
+  //     endpoint: "recommendations/available-genre-seeds",
+  //   });
+  //   console.log(response);
+
+  //   this.genres = response.genres;
+  //   this.configLoading = false;
+  //   console.log(this.genres);
+  // };
 
   setGenre(selectedGenre: any) {
     this.selectedGenre = selectedGenre;
@@ -77,7 +122,15 @@ export class HomeComponent implements OnInit {
   assembleGameData = async (t: any) => {
     this.configLoading = true;
 
+    this.apiCallCount = 0;
+    this.game = {
+      correct_tracks: new Set<any>(),
+      rounds: []
+    };
     while (this.game.rounds.length < this.numberOfRounds) {
+      if (this.apiCallCount >= this.apiCallLimit) {
+        break;
+      }
       const response = await fetchFromSpotify({
         token: t,
         endpoint: this.createSearchQuery()
@@ -88,9 +141,15 @@ export class HomeComponent implements OnInit {
         preview_url = response.tracks.items[0].preview_url;
       } catch (e) {
         console.error('no preview found')
+        this.apiCallCount++;
         continue;
       }
 
+      if (preview_url == null) {
+        console.error('no preview found')
+        this.apiCallCount++;
+        continue;
+      } 
       console.log('preview found!')
 
       let track = {
@@ -106,8 +165,15 @@ export class HomeComponent implements OnInit {
       try {
         pic_url = response.tracks.items[0].artists[0].images[0].url;
       } catch (e) {
-        console.error('no image found')
+        try {
+          pic_url = response.tracks.items[0].album.images[0].url
+        } catch (e) {
+          console.error('no image found')
+          this.apiCallCount++;
+          continue;
+        }
       }
+
       let correct_artist = {
         name: track.artist_name,
         pic_url: pic_url
@@ -124,7 +190,12 @@ export class HomeComponent implements OnInit {
         guessed: ''
       }
       this.game.rounds.push(round);
+      this.apiCallCount++;
     }
+    if (this.apiCallCount >= this.apiCallLimit) {
+      this.errorMessage = 'oops! we have encountered a fatal error :(';
+    }
+
   }
 
   createSearchQuery(): string {
@@ -139,7 +210,10 @@ export class HomeComponent implements OnInit {
     this.configLoading = true;
 
     let artist_set = new Set<any>();
-    while (artist_set.size < this.numberOfArtists) {
+    while (artist_set.size < this.numberOfArtists - 1) {
+      if (this.apiCallCount >= this.apiCallLimit) {
+        break;
+      }
       const response = await fetchFromSpotify({
         token: t,
         endpoint: this.createSearchQuery()
@@ -148,15 +222,22 @@ export class HomeComponent implements OnInit {
       let artist_name = response.tracks.items[0].artists[0].name;
     
       if (artist_name === provided_name) {
+        this.apiCallCount++;
         continue;
       }
 
       let picture_url = '';
       try {
         picture_url = response.tracks.items[0].artists[0].images[0].url;
-      } catch (e) {
-        console.error('no image found')
-      }
+      } catch (e) {   
+          try {
+            picture_url = response.tracks.items[0].album.images[0].url
+          } catch (e) {
+            console.error('no image found')
+            this.apiCallCount++;
+            continue;
+          }
+        }
 
       let artist = {
         name: artist_name,
@@ -164,6 +245,7 @@ export class HomeComponent implements OnInit {
       }
       artist_set.add(artist);
     }
+    this.apiCallCount++;
     return artist_set;
   }
 }
