@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     correct_tracks: new Set<any>(),
     rounds: []
   };
-  apiCallLimit = 45;
+  apiCallLimit = 40;
   apiCallCount = 0;
   numberOfRounds = 2;
   numberOfArtists = 3;
@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit {
 
   authLoading: boolean = false;
   configLoading: boolean = false;
+  gameLoading: boolean = false;
   token: String = "";
 
   ngOnInit(): void {
@@ -118,14 +119,17 @@ export class HomeComponent implements OnInit {
   @Output() emitter:EventEmitter<any> = new EventEmitter();
 
   handleClick() {
-    this.assembleGameData(this.token)
-    console.log(this.game);
-    let navigationExtras: NavigationExtras = {
-      state: {
-        game: this.game
-      }
-    };
-    this.router.navigate(['/game'], navigationExtras);
+    this.gameLoading = true;
+    this.assembleGameData(this.token).then(() => {
+      console.log(this.game);
+      let navigationExtras: NavigationExtras = {
+        state: {
+          game: this.game
+        }
+      };
+      this.gameLoading = false;
+      this.router.navigate(['/game'], navigationExtras);
+    });
   }
 
   assembleGameData = async (t: any) => {
