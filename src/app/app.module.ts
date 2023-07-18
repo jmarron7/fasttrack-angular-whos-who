@@ -6,11 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./home/home.component";
 import { GameComponent } from './game/game.component';
+import { OptionCardComponent } from './components/option-card/option-card.component';
 
 const routes: Routes = [{ path: "", component: HomeComponent }];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, GameComponent],
+  declarations: [AppComponent, HomeComponent, GameComponent, OptionCardComponent],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent],
