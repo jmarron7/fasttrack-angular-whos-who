@@ -4,7 +4,15 @@ import { Router, NavigationExtras } from '@angular/router';
 
 const AUTH_ENDPOINT =
   "https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token";
-const TOKEN_KEY = "whos-who-access-token";
+  const TOKEN_KEY = "whos-who-access-token";
+  
+interface Setting {
+  name: string,
+  label: string,
+  amount: number,
+  min: number,
+  max: number
+}
 
 @Component({
   selector: "app-home",
@@ -12,18 +20,28 @@ const TOKEN_KEY = "whos-who-access-token";
   styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
-  constructor(private router:Router) {}
-
-  errorMessage = '';
   game: any = {
     correct_tracks: new Set<any>(),
     rounds: []
   };
-  apiCallLimit = 45;
-  apiCallCount = 0;
-  numberOfRounds = 2;
-  numberOfArtists = 3;
-  selectedGenre: String = "";
+  
+  settings: Setting[] = [
+    {
+      name: 'numOfRounds',
+      label: '# of Rounds',
+      amount: 1,
+      min: 1,
+      max: 3,
+    },
+    {
+      name: 'numOfChoices',
+      label: 'Artists per Guess',
+      amount: 2,
+      min: 2,
+      max: 4,
+    }
+  ]
+  
   genres: string[] = [
     "alt-rock",
     "alternative", 
@@ -65,11 +83,19 @@ export class HomeComponent implements OnInit {
     "soul",
     "techno"
   ];
-
+  
+  apiCallLimit = 45;
+  apiCallCount = 0;
+  errorMessage = '';
+  numberOfRounds: number = 1
+  numberOfArtists: number = 2
+  selectedGenre: String = "";
   authLoading: boolean = false;
   configLoading: boolean = false;
   token: String = "";
-
+  
+  constructor(private router:Router) {}
+  
   ngOnInit(): void {
     this.authLoading = true;
     const storedTokenString = localStorage.getItem(TOKEN_KEY);
@@ -96,6 +122,51 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // SETTINGS FUNCTIONS
+  increment(settingName: string) {
+    HomeComponent.bind(this)
+    if (this.settings.find((setting) => setting.name === settingName)) {
+      this.settings.forEach((setting) => {
+        if (setting.name === settingName) {
+          setting.amount = setting.amount < setting.max
+            ? (setting.amount + 1)
+            : (setting.amount);
+          
+          this.updateGameSettings(settingName)
+        }
+      })
+    }
+  }
+
+  decrement(settingName: string) {
+    HomeComponent.bind(this)
+    if (this.settings.find((setting) => setting.name === settingName)) {
+      this.settings.forEach((setting) => {
+        if (setting.name === settingName) {
+          setting.amount = setting.amount > setting.min ? (setting.amount - 1) : setting.amount
+          this.updateGameSettings(settingName)
+        }
+      })
+    }
+  }
+
+  updateGameSettings(settingName: string) {
+    if (this.settings.find((setting) => setting.name === settingName)) {
+      this.settings.forEach((setting) => {
+        if (setting.name === settingName) {
+          if(setting.name === "numOfRounds"){
+            this.numberOfRounds = setting.amount
+            console.log("Number of Rounds changed to " + this.numberOfRounds)
+          }
+          if(setting.name === "numOfChoices"){
+            this.numberOfArtists = setting.amount
+            console.log("Number of Artists changed to " + this.numberOfArtists)
+
+          }
+        }
+      })
+    }
+  }
   // loadGenres = async (t: any) => {
   //   this.configLoading = true;
   //   const response = await fetchFromSpotify({
@@ -117,7 +188,7 @@ export class HomeComponent implements OnInit {
 
   @Output() emitter:EventEmitter<any> = new EventEmitter();
 
-  handleClick() {
+  handleStartGame() {
     this.assembleGameData(this.token)
     console.log(this.game);
     let navigationExtras: NavigationExtras = {

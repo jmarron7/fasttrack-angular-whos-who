@@ -1,11 +1,23 @@
+<h1>Whos's Who</h1>
+<h3>Can you guess the singer?</h3>
 <div *ngIf="authLoading || configLoading">Loading...</div>
 <div *ngIf="!authLoading && !configLoading">
-  Genre:
+  <p>Genre:</p>
   <select [(ngModel)]="selectedGenre" (ngModelChange)="setGenre($event)">
     <option [value]=""></option>
     <option [value]="genre" *ngFor="let genre of genres">
       {{ genre }}
     </option>
   </select>
+  <app-setting
+  *ngFor="let setting of settings"
+  name="{{ setting.name }}"
+  label="{{ setting.label }}"
+  [amount]="setting.amount"
+  [min]="setting.min"
+  [max]="setting.max"
+  (incrementSettingByName)="increment(setting.name)"
+  (decrementSettingByName)="decrement(setting.name)"
+></app-setting>
 </div>
-<button (click)="handleClick()">Click</button>
+<button (click)="handleStartGame()">Start Game</button>
