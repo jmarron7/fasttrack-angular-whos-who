@@ -9,6 +9,15 @@
       {{ genre }}
     </option>
   </select>
-  <p>Artists per Guess:</p>
+  <app-setting
+  *ngFor="let setting of settings"
+  name="{{ setting.name }}"
+  label="{{ setting.label }}"
+  [amount]="setting.amount"
+  [min]="setting.min"
+  [max]="setting.max"
+  (incrementSettingByName)="increment(setting.name)"
+  (decrementSettingByName)="decrement(setting.name)"
+></app-setting>
 </div>
 <button (click)="handleClick()">Start Game</button>

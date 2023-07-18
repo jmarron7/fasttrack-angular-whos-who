@@ -3,7 +3,15 @@ import fetchFromSpotify, { request } from "../../services/api";
 
 const AUTH_ENDPOINT =
   "https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token";
-const TOKEN_KEY = "whos-who-access-token";
+  const TOKEN_KEY = "whos-who-access-token";
+  
+interface Setting {
+  name: string,
+  label: string,
+  amount: number,
+  min: number,
+  max: number
+}
 
 @Component({
   selector: "app-home",
@@ -11,18 +19,29 @@ const TOKEN_KEY = "whos-who-access-token";
   styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  
+  settings: Setting[] = [
+    {
+      name: 'numOfRounds',
+      label: '# of Rounds',
+      amount: 1,
+      min: 1,
+      max: 3,
+    },
+    {
+      name: 'numOfChoices',
+      label: 'Artists per Guess',
+      amount: 2,
+      min: 2,
+      max: 4,
+    }
+  ]
 
-  errorMessage = '';
   game: any = {
     correct_tracks: new Set<any>(),
     rounds: []
   };
-  apiCallLimit = 45;
-  apiCallCount = 0;
-  numberOfRounds = 2;
-  numberOfArtists = 3;
-  selectedGenre: String = "";
+  
   genres: string[] = [
     "alt-rock",
     "alternative", 
@@ -64,11 +83,19 @@ export class HomeComponent implements OnInit {
     "soul",
     "techno"
   ];
-
+  
+  apiCallLimit = 45;
+  apiCallCount = 0;
+  errorMessage = '';
+  numberOfRounds = 2;
+  numberOfArtists = 3;
+  selectedGenre: String = "";
   authLoading: boolean = false;
   configLoading: boolean = false;
   token: String = "";
-
+  
+  constructor() {}
+  
   ngOnInit(): void {
     this.authLoading = true;
     const storedTokenString = localStorage.getItem(TOKEN_KEY);
@@ -93,6 +120,30 @@ export class HomeComponent implements OnInit {
       this.token = newToken.value;
       // this.loadGenres(newToken.value);
     });
+  }
+
+  increment(settingName: string) {
+    HomeComponent.bind(this)
+    if (this.settings.find((setting) => setting.name === settingName)) {
+      this.settings.forEach((setting) => {
+        if (setting.name === settingName) {
+          setting.amount = setting.amount < setting.max
+            ? (setting.amount + 1)
+            : (setting.amount)
+        }
+      })
+    }
+  }
+
+  decrement(settingName: string) {
+    HomeComponent.bind(this)
+    if (this.settings.find((setting) => setting.name === settingName)) {
+      this.settings.forEach((setting) => {
+        if (setting.name === settingName) {
+          setting.amount = setting.amount > setting.min ? (setting.amount - 1) : setting.amount
+        }
+      })
+    }
   }
 
   // loadGenres = async (t: any) => {
