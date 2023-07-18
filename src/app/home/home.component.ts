@@ -83,9 +83,15 @@ export class HomeComponent implements OnInit {
         endpoint: this.createSearchQuery()
       });
       
-      if (response.tracks.items[0].preview_url === null) {
+      let preview_url = '';
+      try {
+        preview_url = response.tracks.items[0].preview_url;
+      } catch (e) {
+        console.error('no preview found')
         continue;
       }
+
+      console.log('preview found!')
 
       let track = {
         artist_name: response.tracks.items[0].artists[0].name,
