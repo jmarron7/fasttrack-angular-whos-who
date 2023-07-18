@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import fetchFromSpotify, { request } from "../../services/api";
+import { Router, NavigationExtras } from '@angular/router';
 
 const AUTH_ENDPOINT =
   "https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token";
@@ -19,6 +20,10 @@ interface Setting {
   styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
+  game: any = {
+    correct_tracks: new Set<any>(),
+    rounds: []
+  };
   
   settings: Setting[] = [
     {
@@ -36,11 +41,6 @@ export class HomeComponent implements OnInit {
       max: 4,
     }
   ]
-
-  game: any = {
-    correct_tracks: new Set<any>(),
-    rounds: []
-  };
   
   genres: string[] = [
     "alt-rock",
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
   configLoading: boolean = false;
   token: String = "";
   
-  constructor() {}
+  constructor(private router:Router) {}
   
   ngOnInit(): void {
     this.authLoading = true;
@@ -186,9 +186,17 @@ export class HomeComponent implements OnInit {
     console.log(TOKEN_KEY);
   }
 
+  @Output() emitter:EventEmitter<any> = new EventEmitter();
+
   handleStartGame() {
     this.assembleGameData(this.token)
     console.log(this.game);
+    let navigationExtras: NavigationExtras = {
+      state: {
+        game: this.game
+      }
+    };
+    this.router.navigate(['/game'], navigationExtras);
   }
 
   assembleGameData = async (t: any) => {
