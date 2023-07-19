@@ -260,8 +260,12 @@ export class HomeComponent implements OnInit {
       let wrongArtists = this.getWrongArtists(this.token, track.artistName);
       (await wrongArtists).forEach((artist) => artists.add(artist));
 
+      const shuffle = (array: string[]) => { 
+        return array.sort(() => Math.random() - 0.5); 
+    }; 
+
       let round = {
-        artistList: Array.from(artists),
+        artistList: shuffle(Array.from(artists)),
         track: track,
         correct: track.artistName,
         guessed: ''
