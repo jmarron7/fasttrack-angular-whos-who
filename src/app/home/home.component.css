@@ -1,0 +1,60 @@
+header {
+    font-size: xx-large;
+}
+
+h3 {
+    font-size: large;
+}
+
+#body {
+    margin-top: 90px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+#start-button {
+    margin-top: 20px;
+    width: 100px;
+    height: 40px;
+}
+
+#setting-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 400px;
+}
+
+#setting-label-box {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    text-align: right;
+    margin-right: 10px;
+    height: 200px;
+    width: 200px;
+}
+
+#setting-option-box {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    text-align: center;
+    margin-left: 10px;
+    height: 200px;
+    width: 200px;
+}
+
+.label {
+    text-align: center;
+}
+
+.setting {
+    text-align: left;
+    height: 30px;
+    width: 140px;
+}

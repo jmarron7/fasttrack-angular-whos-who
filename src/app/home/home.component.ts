@@ -25,6 +25,12 @@ export class HomeComponent implements OnInit {
     rounds: []
   };
   
+  config: any = {
+    genre: '',
+    rounds: 0,
+    choices: 0
+  }
+
   settings: Setting[] = [
     {
       name: 'numOfRounds',
@@ -88,7 +94,7 @@ export class HomeComponent implements OnInit {
   apiCallCount = 0;
   errorMessage = '';
   numberOfRounds: number = 1
-  numberOfArtists: number = 2
+  numberOfChoices: number = 2
   selectedGenre: String = "";
   authLoading: boolean = false;
   configLoading: boolean = false;
@@ -98,6 +104,18 @@ export class HomeComponent implements OnInit {
   constructor(private router:Router) {}
   
   ngOnInit(): void {
+    this.configLoading = true;
+    let storedConfig = localStorage.getItem('config');
+    if (storedConfig != null) {
+      this.config = JSON.parse(storedConfig);
+      this.numberOfRounds = this.config.rounds;
+      this.numberOfChoices = this.config.choices;
+      this.selectedGenre = this.config.genre;
+      this.settings[0].amount = this.numberOfRounds;
+      this.settings[1].amount = this.numberOfChoices;
+    }
+    localStorage.setItem('config', JSON.stringify(this.config));
+    this.configLoading = false;
     this.authLoading = true;
     const storedTokenString = localStorage.getItem(TOKEN_KEY);
     console.log("Created token")
@@ -161,8 +179,8 @@ export class HomeComponent implements OnInit {
             console.log("Number of Rounds changed to " + this.numberOfRounds)
           }
           if(setting.name === "numOfChoices"){
-            this.numberOfArtists = setting.amount
-            console.log("Number of Artists changed to " + this.numberOfArtists)
+            this.numberOfChoices = setting.amount
+            console.log("Number of Artists changed to " + this.numberOfChoices)
 
           }
         }
@@ -172,6 +190,8 @@ export class HomeComponent implements OnInit {
  
   setGenre(selectedGenre: any) {
     this.selectedGenre = selectedGenre;
+    this.config.genre = this.selectedGenre;
+    localStorage.setItem('config', JSON.stringify(this.config));
     console.log(this.selectedGenre);
     console.log(TOKEN_KEY);
   }
@@ -181,6 +201,9 @@ export class HomeComponent implements OnInit {
 
   handleStartGame() {
     this.gameLoading = true;
+    this.config.rounds = this.numberOfRounds;
+    this.config.choices =  this.numberOfChoices;
+    localStorage.setItem('config', JSON.stringify(this.config));
     this.assembleGameData(this.token).then(() => {
       console.log(this.game);
       let navigationExtras: NavigationExtras = {
@@ -290,7 +313,7 @@ export class HomeComponent implements OnInit {
   getWrongArtists = async (t: any, providedName: string) => {
     this.configLoading = true;
     let artistSet = new Set<any>();
-    while (artistSet.size < this.numberOfArtists - 1) {
+    while (artistSet.size < this.numberOfChoices - 1) {
       if (this.apiCallCount >= this.apiCallLimit) {
         break;
       }
