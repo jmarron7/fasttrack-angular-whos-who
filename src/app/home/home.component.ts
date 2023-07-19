@@ -21,7 +21,6 @@ interface Setting {
 })
 export class HomeComponent implements OnInit {
   game: any = {
-    correctTracks: [],
     rounds: []
   };
   
@@ -221,11 +220,8 @@ export class HomeComponent implements OnInit {
 
     this.apiCallCount = 0;
     this.game = {
-      correctTracks: [],
       rounds: []
     };
-
-    let correctTracksSet = new Set<any>()
     
     while (this.game.rounds.length < this.numberOfRounds) {
       if (this.apiCallCount >= this.apiCallLimit) {
@@ -257,7 +253,6 @@ export class HomeComponent implements OnInit {
         previewUrl: response.tracks.items[0].preview_url,
         trackName: response.tracks.items[0].name
       }
-      this.game.correctTracks.push(Array.from(correctTracksSet.add(track)));
 
       let artists = new Set<any>();
       

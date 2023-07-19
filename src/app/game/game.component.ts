@@ -11,7 +11,6 @@ export class GameComponent implements OnInit {
 
   isPlaying = false
   game: any = {
-    correctTtracks: [],
     rounds: []
   };
   
@@ -69,6 +68,8 @@ export class GameComponent implements OnInit {
     if(optionGuessed === this.game.rounds[this.currentRound].correct) {
       this.isCorrect = true;      
       this.score++
+    } else {
+      this.isCorrect = false;
     }
     this.sound.stop();
     this.isPlaying = false;
@@ -84,9 +85,11 @@ export class GameComponent implements OnInit {
   goToResults() {
     let navigationExtras: NavigationExtras = {
       state: {
-        game: this.game
+        game: this.game,
+        score: this.score
       }
     };
+    console.log('navigating');
     this.router.navigate(['/results'], navigationExtras);
   }
 
