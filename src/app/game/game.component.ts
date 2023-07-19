@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-const {Howl, Howler} = require('howler');
+const { Howl } = require('howler');
 
 @Component({
   selector: 'app-game',
@@ -10,20 +9,20 @@ const {Howl, Howler} = require('howler');
 })
 export class GameComponent implements OnInit {
 
-  buttonLabel = "Play Song"
-
+  // buttonLabel = "Play Song"
+  isPlaying = false
   game: any = {
-    correct_tracks: new Set<any>(),
+    correctTtracks: [],
     rounds: []
   };
+  
   currentRound = 0;
   totalRounds = 0;
   score = 0;
   sound = new Howl({
-    src: [],
-    html5: false,
-    volume: 0,
-    onend: function() {}
+    src: [""],
+    html5: true,
+    volume: 0.5,
   });
 
   constructor(private router: Router) {
@@ -35,25 +34,39 @@ export class GameComponent implements OnInit {
     console.log(this.game);
     this.totalRounds = this.game.rounds.length
     this.sound = new Howl({
-      src: [this.game.rounds[0].track.preview_url],
+      src: [this.game.rounds[0].track.previewUrl],
       html5: true,
-      volume: 1,
-      onend: function() {
-        console.log("Done")
-      }
+      volume: 0.5,
     });
+
+    this.sound.on('end', () => {
+      this.isPlaying = false
+      console.log("Done for real")
+    });
+    
   }
 
-  handlePlayTrack() {
-    console.log('here!')
-    
+  handlePlayTrack() {    
     if (!this.sound.playing()) {
-      this.sound.play();
-      this.buttonLabel = "Pause Song"
+      this.sound.play()
+      this.sound.fade(0, 0.8, 5000);
+      this.isPlaying = true
     }
     else {
       this.sound.pause();
-      this.buttonLabel = "Play Song"
+      this.isPlaying = false
+    }
+    
+  }
+
+  chooseOption(optionGuessed: string) {
+    GameComponent.bind(this)
+    this.game.rounds[this.currentRound].guessed = optionGuessed
+    if(optionGuessed === this.game.rounds[this.currentRound].correct) {
+      console.log("Correct!")
+      this.score++
+    } else {
+      console.log("Incorrect!")
     }
   }
 }
