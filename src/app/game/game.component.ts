@@ -61,8 +61,9 @@ export class GameComponent implements OnInit {
   chooseOption(optionGuessed: string) {
     GameComponent.bind(this)
     this.game.rounds[this.currentRound].guessed = optionGuessed
-    if(optionGuessed == this.game.rounds[this.currentRound].correct) {
+    if(optionGuessed === this.game.rounds[this.currentRound].correct) {
       console.log("Correct!")
+      this.score++
     } else {
       console.log("Incorrect!")
     }
