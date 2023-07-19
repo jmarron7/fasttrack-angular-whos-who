@@ -9,8 +9,8 @@ const { Howl } = require('howler');
 })
 export class GameComponent implements OnInit {
 
-  buttonLabel = "Play Song"
-
+  // buttonLabel = "Play Song"
+  isPlaying = false
   game: any = {
     correctTtracks: [],
     rounds: []
@@ -23,9 +23,6 @@ export class GameComponent implements OnInit {
     src: [""],
     html5: true,
     volume: 0.5,
-    onend: function() {        
-      this.buttonLabel = "Play Song" 
-     }
   });
 
   constructor(private router: Router) {
@@ -40,22 +37,26 @@ export class GameComponent implements OnInit {
       src: [this.game.rounds[0].track.previewUrl],
       html5: true,
       volume: 0.5,
-      onend: function() {
-        this.buttonLabel = "Play Song"
-      }
     });
+
+    this.sound.on('end', () => {
+      this.isPlaying = false
+      console.log("Done for real")
+    });
+    
   }
 
   handlePlayTrack() {    
     if (!this.sound.playing()) {
       this.sound.play()
       this.sound.fade(0, 0.8, 5000);
-      this.buttonLabel = "Pause Song"
+      this.isPlaying = true
     }
     else {
       this.sound.pause();
-      this.buttonLabel = "Play Song"
+      this.isPlaying = false
     }
+    
   }
 
   chooseOption(optionGuessed: string) {

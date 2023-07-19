@@ -6,7 +6,8 @@
     <div class="image-placeholder">
         <h1>?</h1>
     </div>
-    <button (click)="handlePlayTrack()">{{ buttonLabel }}</button>
+    <button (click)="handlePlayTrack()" *ngIf="!isPlaying">Play Song</button>
+    <button (click)="handlePlayTrack()" *ngIf="isPlaying">Pause Song</button>
     <div class="options-container options-column">
         <app-option-card
         *ngFor="let artist of this.game.rounds[currentRound].artistList"
