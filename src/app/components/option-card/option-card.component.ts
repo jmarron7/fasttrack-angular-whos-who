@@ -9,6 +9,7 @@ export class OptionCardComponent implements OnInit {
 
   @Input() artistName: string = "Placeholder"
   @Input() picUrl: string = ""
+  @Input() hasChosen: boolean = false;
 
   @Output() chooseSelectedOption = new EventEmitter<string>()
   
@@ -16,7 +17,6 @@ export class OptionCardComponent implements OnInit {
     console.log("clicked on "+ this.artistName)
     this.chooseSelectedOption.emit()
   }
-
 
   constructor() { }
 

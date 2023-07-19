@@ -16,6 +16,20 @@
     cursor: pointer;
 }
 
+.alt-card-container {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    border: 1px solid blueviolet;
+    width: auto;
+    height: 75px;
+    align-self: center;
+    justify-items: center;
+    background-color: rgb(38 38 38);
+}
+
+
+
 .card-pic {
     width: 75px;
     height: 75px;

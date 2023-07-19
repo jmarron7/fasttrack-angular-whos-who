@@ -24,6 +24,7 @@ export class GameComponent implements OnInit {
     html5: true,
     volume: 0.5,
   });
+  hasChosen = false;
 
   constructor(private router: Router) {
     let input = this.router.getCurrentNavigation();
@@ -33,17 +34,7 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.game);
     this.totalRounds = this.game.rounds.length
-    this.sound = new Howl({
-      src: [this.game.rounds[0].track.previewUrl],
-      html5: true,
-      volume: 0.5,
-    });
-
-    this.sound.on('end', () => {
-      this.isPlaying = false
-      console.log("Done for real")
-    });
-    
+    this.setSound();
   }
 
   handlePlayTrack() {    
@@ -59,14 +50,27 @@ export class GameComponent implements OnInit {
     
   }
 
+  setSound() {
+    this.sound = new Howl({
+      src: [this.game.rounds[this.currentRound].track.previewUrl],
+      html5: true,
+      volume: 0.5,
+  });
+    this.sound.on('end', () => {
+      this.isPlaying = false
+      console.log("Done for real")
+    });
+  }
+
+
   chooseOption(optionGuessed: string) {
     GameComponent.bind(this)
     this.game.rounds[this.currentRound].guessed = optionGuessed
     if(optionGuessed === this.game.rounds[this.currentRound].correct) {
       console.log("Correct!")
       this.score++
-    } else {
-      console.log("Incorrect!")
     }
+    this.hasChosen = true;
   }
+
 }
