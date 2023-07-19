@@ -1,5 +1,5 @@
 <div id="body">
-  <header>Whos's Who?</header>
+  <header>Who's Who?</header>
   <h3>Can you guess the artist?</h3>
   <div *ngIf="authLoading || configLoading || gameLoading">Loading...</div>
   <div *ngIf="!authLoading && !configLoading && !gameLoading">
@@ -7,7 +7,7 @@
       <div id="setting-label-box">
         <div class="label">Genre:</div>
         <div class="label">Number of Rounds:</div>
-        <div class="label">Options per Round:</div>
+        <div class="label">Number of Choices:</div>
       </div>
       <div id="setting-option-box">
         <select [(ngModel)]="selectedGenre" (ngModelChange)="setGenre($event)" class="setting">

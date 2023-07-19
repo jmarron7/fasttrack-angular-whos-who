@@ -21,10 +21,16 @@ interface Setting {
 })
 export class HomeComponent implements OnInit {
   game: any = {
-    correct_tracks: new Set<any>(),
+    correctTracks: [],
     rounds: []
   };
   
+  config: any = {
+    genre: '',
+    rounds: 0,
+    choices: 0
+  }
+
   settings: Setting[] = [
     {
       name: 'numOfRounds',
@@ -88,7 +94,7 @@ export class HomeComponent implements OnInit {
   apiCallCount = 0;
   errorMessage = '';
   numberOfRounds: number = 1
-  numberOfArtists: number = 2
+  numberOfChoices: number = 2
   selectedGenre: String = "";
   authLoading: boolean = false;
   configLoading: boolean = false;
@@ -98,15 +104,28 @@ export class HomeComponent implements OnInit {
   constructor(private router:Router) {}
   
   ngOnInit(): void {
+    this.configLoading = true;
+    let storedConfig = localStorage.getItem('config');
+    if (storedConfig != null) {
+      this.config = JSON.parse(storedConfig);
+      this.numberOfRounds = this.config.rounds;
+      this.numberOfChoices = this.config.choices;
+      this.selectedGenre = this.config.genre;
+      this.settings[0].amount = this.numberOfRounds;
+      this.settings[1].amount = this.numberOfChoices;
+    }
+    localStorage.setItem('config', JSON.stringify(this.config));
+    this.configLoading = false;
     this.authLoading = true;
     const storedTokenString = localStorage.getItem(TOKEN_KEY);
+    console.log("Created token")
     if (storedTokenString) {
       const storedToken = JSON.parse(storedTokenString);
       if (storedToken.expiration > Date.now()) {
         console.log("Token found in localstorage");
         this.authLoading = false;
         this.token = storedToken.value;
-        // this.loadGenres(storedToken.value);
+
         return;
       }
     }
@@ -160,29 +179,19 @@ export class HomeComponent implements OnInit {
             console.log("Number of Rounds changed to " + this.numberOfRounds)
           }
           if(setting.name === "numOfChoices"){
-            this.numberOfArtists = setting.amount
-            console.log("Number of Artists changed to " + this.numberOfArtists)
+            this.numberOfChoices = setting.amount
+            console.log("Number of Artists changed to " + this.numberOfChoices)
 
           }
         }
       })
     }
   }
-  // loadGenres = async (t: any) => {
-  //   this.configLoading = true;
-  //   const response = await fetchFromSpotify({
-  //     token: t,
-  //     endpoint: "recommendations/available-genre-seeds",
-  //   });
-  //   console.log(response);
-
-  //   this.genres = response.genres;
-  //   this.configLoading = false;
-  //   console.log(this.genres);
-  // };
-
+ 
   setGenre(selectedGenre: any) {
     this.selectedGenre = selectedGenre;
+    this.config.genre = this.selectedGenre;
+    localStorage.setItem('config', JSON.stringify(this.config));
     console.log(this.selectedGenre);
     console.log(TOKEN_KEY);
   }
@@ -192,6 +201,9 @@ export class HomeComponent implements OnInit {
 
   handleStartGame() {
     this.gameLoading = true;
+    this.config.rounds = this.numberOfRounds;
+    this.config.choices =  this.numberOfChoices;
+    localStorage.setItem('config', JSON.stringify(this.config));
     this.assembleGameData(this.token).then(() => {
       console.log(this.game);
       let navigationExtras: NavigationExtras = {
@@ -209,9 +221,12 @@ export class HomeComponent implements OnInit {
 
     this.apiCallCount = 0;
     this.game = {
-      correct_tracks: new Set<any>(),
+      correctTracks: [],
       rounds: []
     };
+
+    let correctTracksSet = new Set<any>()
+    
     while (this.game.rounds.length < this.numberOfRounds) {
       if (this.apiCallCount >= this.apiCallLimit) {
         break;
@@ -221,16 +236,16 @@ export class HomeComponent implements OnInit {
         endpoint: this.createSearchQuery()
       });
       
-      let preview_url = '';
+      let previewUrl = '';
       try {
-        preview_url = response.tracks.items[0].preview_url;
+        previewUrl = response.tracks.items[0].preview_url;
       } catch (e) {
         console.error('no preview found')
         this.apiCallCount++;
         continue;
       }
 
-      if (preview_url == null) {
+      if (previewUrl == null) {
         console.error('no preview found')
         this.apiCallCount++;
         continue;
@@ -238,20 +253,20 @@ export class HomeComponent implements OnInit {
       console.log('preview found!')
 
       let track = {
-        artist_name: response.tracks.items[0].artists[0].name,
-        preview_url: response.tracks.items[0].preview_url,
-        track_name: response.tracks.items[0].name
+        artistName: response.tracks.items[0].artists[0].name,
+        previewUrl: response.tracks.items[0].preview_url,
+        trackName: response.tracks.items[0].name
       }
-      this.game.correct_tracks.add(track);
+      this.game.correctTracks.push(Array.from(correctTracksSet.add(track)));
 
       let artists = new Set<any>();
       
-      let pic_url = '';
+      let picUrl = '';
       try {
-        pic_url = response.tracks.items[0].artists[0].images[0].url;
+        picUrl = response.tracks.items[0].artists[0].images[0].url;
       } catch (e) {
         try {
-          pic_url = response.tracks.items[0].album.images[0].url
+          picUrl = response.tracks.items[0].album.images[0].url
         } catch (e) {
           console.error('no image found')
           this.apiCallCount++;
@@ -259,19 +274,23 @@ export class HomeComponent implements OnInit {
         }
       }
 
-      let correct_artist = {
-        name: track.artist_name,
-        pic_url: pic_url
+      let correctArtist = {
+        name: track.artistName,
+        picUrl: picUrl
       }
-      artists.add(correct_artist);
+      artists.add(correctArtist);
 
-      let wrongArtists = this.getWrongArtists(this.token, track.artist_name);
+      let wrongArtists = this.getWrongArtists(this.token, track.artistName);
       (await wrongArtists).forEach((artist) => artists.add(artist));
 
+      const shuffle = (array: string[]) => { 
+        return array.sort(() => Math.random() - 0.5); 
+    }; 
+
       let round = {
-        artist_set: artists,
+        artistList: shuffle(Array.from(artists)),
         track: track,
-        correct: track.artist_name,
+        correct: track.artistName,
         guessed: ''
       }
       this.game.rounds.push(round);
@@ -291,11 +310,10 @@ export class HomeComponent implements OnInit {
     return searchQuery;
   }
 
-  getWrongArtists = async (t: any, provided_name: string) => {
+  getWrongArtists = async (t: any, providedName: string) => {
     this.configLoading = true;
-
-    let artist_set = new Set<any>();
-    while (artist_set.size < this.numberOfArtists - 1) {
+    let artistSet = new Set<any>();
+    while (artistSet.size < this.numberOfChoices - 1) {
       if (this.apiCallCount >= this.apiCallLimit) {
         break;
       }
@@ -304,19 +322,19 @@ export class HomeComponent implements OnInit {
         endpoint: this.createSearchQuery()
       });
 
-      let artist_name = response.tracks.items[0].artists[0].name;
+      let artistName = response.tracks.items[0].artists[0].name;
     
-      if (artist_name === provided_name) {
+      if (artistName === providedName) {
         this.apiCallCount++;
         continue;
       }
 
-      let picture_url = '';
+      let pictureUrl = '';
       try {
-        picture_url = response.tracks.items[0].artists[0].images[0].url;
+        pictureUrl = response.tracks.items[0].artists[0].images[0].url;
       } catch (e) {   
           try {
-            picture_url = response.tracks.items[0].album.images[0].url
+            pictureUrl = response.tracks.items[0].album.images[0].url
           } catch (e) {
             console.error('no image found')
             this.apiCallCount++;
@@ -325,12 +343,12 @@ export class HomeComponent implements OnInit {
         }
 
       let artist = {
-        name: artist_name,
-        pic_url: picture_url
+        name: artistName,
+        picUrl: pictureUrl
       }
-      artist_set.add(artist);
+      artistSet.add(artist);
     }
     this.apiCallCount++;
-    return artist_set;
+    return artistSet;
   }
 }

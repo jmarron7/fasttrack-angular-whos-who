@@ -1,8 +1,46 @@
-#counters {
+h1 {
+    position: absolute; 
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 48px;
+}
+
+.game-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 80%;
+    height: 80%;
+    padding: 0px 0px 0px 0px;
+}
+
+.image-placeholder {
+    box-sizing: border-box;
+    border: 1px solid rgb(10 10 10);
+    border-radius: 9999px;
+    width: 200px;
+    height: 200px;
+    background: rgb(163 163 163);
+    align-items: center;
+    justify-content: center;
+}
+
+
+.counters {
+    position: relative;
     text-align: right;
 }
 
-#options {
-    margin-top: 200px;
-    text-align: center;
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.options-column {
+    flex: 50%;
+    padding: 20px;
 }
