@@ -1,8 +1,18 @@
-<div id="counters">
-    <div>round: {{ currentRound }}/{{ totalRounds }}</div>
+<div class="counters">
+    <div>round: {{ currentRound + 1 }}/{{ totalRounds }}</div>
     <div>score: {{ score }}/{{ totalRounds }}</div>
 </div>
-<div id="options">
-    {{ game.rounds[0].track.artist_name }}
+<div class="game-container">
+    <div class="image-placeholder">
+        <h1>?</h1>
+    </div>
+    <button (click)="handlePlayTrack()">{{ buttonLabel }}</button>
+    <div class="options-container options-column">
+        <app-option-card
+        *ngFor="let artist of this.game.rounds[currentRound].artistList"
+        artistName="{{ artist.name }}" 
+        picUrl="{{artist.picUrl}}"
+        (chooseSelectedOption)="chooseOption(artist.name)"
+        ></app-option-card>
+    </div>
 </div>
-<button (click)="handlePlayTrack()">{{ buttonLabel }}</button>
