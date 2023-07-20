@@ -1,0 +1,12 @@
+<div class="results-container">
+    <h1>Results</h1>
+    <h3>Score: {{ score }} / {{ resultData.rounds.length }} </h3>
+    <div class="results-info">
+            <app-results-card
+            *ngFor="let round of resultData.rounds; let roundIndex = index" 
+            [index]="roundIndex"
+            [round] ="round"
+            ></app-results-card>
+    </div>
+    <button (click)="goHome()" class="play-again-button">Play Again!</button>
+</div>

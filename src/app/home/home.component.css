@@ -1,0 +1,65 @@
+header {
+    font-size: 48px;
+    letter-spacing: 6px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+h3 {
+    font-size: 18px;
+    padding-bottom: 10px;
+}
+
+.home-container {
+    margin-top: 90px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.start-button {
+    margin-top: 20px;
+    width: 150px;
+    margin-bottom: 40px;
+}
+
+.setting-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 400px;
+}
+
+.setting-label-box {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: end;
+    text-align: right;
+    margin-right: 10px;
+    height: 200px;
+    width: 200px;
+}
+
+.setting-option-box {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    text-align: center;
+    margin-left: 10px;
+    height: 200px;
+    width: 200px;
+}
+
+.label {
+    text-align: center;
+}
+
+.setting {
+    text-align: left;
+    height: 30px;
+    width: 140px;
+}

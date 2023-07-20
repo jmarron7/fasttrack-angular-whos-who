@@ -1,0 +1,26 @@
+<div class="results-container">
+    <div class="top-section">
+        <div class="round-result">
+            <h3>Round {{ index + 1 }}:</h3>
+            <img *ngIf="wasCorrect" class="mark" src="../../../assets/correct.png" width=20 height=20/>
+            <img *ngIf="!wasCorrect" class="mark" src="../../../assets/wrong.png" width=20 height=20/>
+        </div>
+        <div class="song-title-container">
+            <h3 class="song-title">Song: {{ title }}</h3>
+        </div>
+    </div>
+    <div class="card-container">
+        <img class="card-pic" [src]="picUrl" />
+        <div class="artist-info-container">
+            <div class="inner-text">
+                <div>
+                    <p class="artist-name"> {{ guessedName }}</p>
+                </div>
+                <div class="correct-answer-container">
+                    <p *ngIf="!wasCorrect" class="correct-answer"> Answer: {{ correctName }}</p>
+                </div>
+            </div>
+            <a class="song-link" href="{{spotifyUrl}}" target="_blank">Link to Spotify</a>
+        </div>
+    </div>
+</div>

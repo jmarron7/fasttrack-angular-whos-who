@@ -1,0 +1,4 @@
+<div [ngClass]=" hasChosen ? 'alt-card-container' : 'card-container'" (click)="handleChoose()">
+    <img class="card-pic" [src]="picUrl"/>
+    <p class="artist-name">{{ artistName }}</p>
+</div>

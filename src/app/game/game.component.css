@@ -1,0 +1,110 @@
+h1 {
+    position: absolute; 
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 48px;
+}
+
+button:not(#see-results-button, #next-round-button) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+button img:not(#pause-button) {
+    position: relative;
+    left: 5%;
+}
+
+img #pause-button {
+    align-self: center;
+    left: 10%;
+}
+.game-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    padding: 0px 0px 0px 0px;
+}
+
+.counters {
+    position: absolute;
+    right: 60px;
+    text-align: right;
+}
+
+.options-container {
+    padding-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 700px;
+    margin-bottom: 40px;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.visible, .invisible {
+    margin-top: 35px;
+}
+
+.result {
+    margin-left: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 200px;
+    height: 150px;
+}
+
+.mark {
+    margin-left: 10px;
+    align-self: center;
+}
+
+h3 {
+    font-size: xx-large;
+    align-self: center;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        padding-top: 10px !important; 
+    }
+
+    .game-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100vw;
+    }
+
+    .options-container {
+        padding-top: 30px;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .counters {
+        right: 10px;
+        text-align: right;
+    }
+}

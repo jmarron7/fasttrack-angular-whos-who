@@ -1,0 +1,62 @@
+.card-container {
+    display: flex;
+    flex-direction: row; 
+    box-sizing: border-box;
+    border: 1px solid rgb(10 10 10);
+    width: 300px;
+    height: 75px;
+    align-content: center;
+    justify-content: center;
+    background-color: rgb(245 245 245);
+    filter: drop-shadow(0px 0px 5px rgb(163 163 163));
+    transition: .2s ease-in-out 0s;
+    flex-basis: 50%;
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+.card-container:hover {
+    background-color: rgb(229 229 229);
+    cursor: pointer;
+}
+
+.alt-card-container {
+    display: flex;
+    flex-direction: row; 
+    box-sizing: border-box;
+    border: 1px solid rgb(10 10 10);
+    width: 300px;
+    height: 75px;
+    align-self: center;
+    justify-content: center;
+    background-color: rgb(245 245 245);
+    filter: drop-shadow(0px 0px 5px rgb(163 163 163));
+    flex-basis: 50%;
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+img .card-pic {
+    overflow: hidden;
+    width: 75px;
+    height: 75px;
+}
+
+.card-pic {
+    width: 100px;
+    max-height: 100px;
+    border: none;
+    overflow: hidden;
+    border-right: 1px solid rgb(163 163 163);
+}
+
+.artist-name {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    align-self: center;
+    justify-content: center;
+    text-align: center;
+    top: 50%;
+}
