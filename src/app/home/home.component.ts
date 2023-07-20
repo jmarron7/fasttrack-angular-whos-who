@@ -330,6 +330,8 @@ export class HomeComponent implements OnInit {
         continue;
       }
 
+      artistNames.add(wrongArtistName);
+
       let pictureUrl = '';
       try {
         pictureUrl = response.tracks.items[0].artists[0].images[0].url;

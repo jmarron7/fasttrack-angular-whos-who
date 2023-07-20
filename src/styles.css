@@ -89,3 +89,7 @@ select {
     scroll-behavior: auto !important;
   }
 }
+
+button:hover {
+  cursor: pointer;
+}
