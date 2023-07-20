@@ -1,20 +1,11 @@
 <div class="results-container">
     <h1>Results</h1>
-    <h3>Score: ? / ? </h3>
+    <h3>Score: {{ score }} / {{ resultData.rounds.length }} </h3>
     <div class="results-info">
-        <h3>Round 1:</h3>
-        <app-results-card></app-results-card>
-    </div>
-    <div class="results-info">
-        <h3>Round 2:</h3>
-        <app-results-card></app-results-card>
-    </div>
-    <div class="results-info">
-        <h3>Round 3:</h3>
-        <app-results-card></app-results-card>
-    </div>
-    <div class="results-info">
-        <h3>Round 4:</h3>
-        <app-results-card></app-results-card>
+            <app-results-card
+            *ngFor="let round of resultData.rounds; let roundIndex = index" 
+            [index]="roundIndex"
+            [round] ="round"
+            ></app-results-card>
     </div>
 </div>

@@ -39,7 +39,7 @@
 .card-pic {
     width: 75px;
     height: 75px;
-    border: 1px solid red;
+    border: none;
 }
 
 .artist-name {

@@ -32,7 +32,7 @@ export class ResultsComponent implements OnInit {
   assembleResultData() {
     for (let round of this.game.rounds) {
       let choice: any = {
-        artist: round.guessed,
+        guessedArtist: round.guessed,
         trackTitle: round.track.trackName,
         picUrl: (() => {
           let name = round.guessed;
