@@ -31,9 +31,12 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.game);
-    this.totalRounds = this.game.rounds.length
-    this.setSound();
+    if (this.game === undefined) {
+      this.router.navigate(['/']);
+    } else {
+      this.totalRounds = this.game.rounds.length
+      this.setSound();
+    }
   }
 
   handlePlayTrack() {    
