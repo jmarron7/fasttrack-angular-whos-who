@@ -26,7 +26,6 @@ export class ResultsCardComponent implements OnInit {
     this.picUrl = this.round.choice.picUrl;
     this.spotifyUrl = this.round.choice.spotifyUrl;
     this.wasCorrect = this.correctName === this.guessedName;
-    console.log(this.spotifyUrl);
   }
 
 
