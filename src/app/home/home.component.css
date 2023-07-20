@@ -6,11 +6,11 @@ header {
 }
 
 h3 {
-    font-size: large;
+    font-size: 18px;
     padding-bottom: 10px;
 }
 
-#body {
+.home-container {
     margin-top: 90px;
     display: flex;
     flex-direction: column;
@@ -18,12 +18,12 @@ h3 {
     align-items: center;
 }
 
-#start-button {
+.start-button {
     margin-top: 20px;
     width: 150px;
 }
 
-#setting-box {
+.setting-box {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -32,7 +32,7 @@ h3 {
     width: 400px;
 }
 
-#setting-label-box {
+.setting-label-box {
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
@@ -43,7 +43,7 @@ h3 {
     width: 200px;
 }
 
-#setting-option-box {
+.setting-option-box {
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
