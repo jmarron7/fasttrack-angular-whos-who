@@ -22,11 +22,13 @@ export class ResultsComponent implements OnInit {
     let input = this.router.getCurrentNavigation();
     this.game = input?.extras?.state?.['game'];
     this.score = input?.extras?.state?.['score'];
-    this.assembleResultData();
-    console.log(this.resultData);
   }
 
   ngOnInit(): void {
+    if (this.game === undefined)
+      this.router.navigate(['/']);
+    this.assembleResultData();
+    console.log(this.resultData);
   }
 
   assembleResultData() {
@@ -37,7 +39,7 @@ export class ResultsComponent implements OnInit {
         spotifyUrl: round.track.spotifyUrl,
         picUrl: (() => {
           let name = round.guessed;
-          return round.artistList.find((a: { name: string, picUrl: string }) => a.name === name).picUrl;
+          return round.artistList.find((a: { name: string }) => a.name === name).picUrl;
         })()
       }
       let r: any = {
