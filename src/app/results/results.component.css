@@ -15,4 +15,21 @@
 .play-again-button {
     margin-top: 20px;
     width: 150px;
+    margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        padding: none;
+    }
+    
+    .results-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100vw;
+    }
 }

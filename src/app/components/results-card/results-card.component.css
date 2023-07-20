@@ -135,3 +135,87 @@ button {
 .song-link:hover {
     background-color: rgb(212 212 212);
 }
+
+@media only screen and (max-width: 600px) {
+    .top-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 80%;
+    }
+
+    .song-title-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+    
+    .song-title {
+        font-size: 16px;
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+    }
+
+    .card-container {
+        display: flex;
+        flex-direction: column; 
+        box-sizing: border-box;
+        border: 1px solid rgb(10 10 10);
+        width: 80%;
+        height: 150px;
+        align-content: center;
+        justify-content: center;
+        color: rgb(10 10 10);
+        background-color: rgb(245 245 245);
+        filter: drop-shadow(0px 0px 5px rgb(163 163 163));
+        flex-basis: 50%;
+        flex-grow: 1;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    
+    img .card-pic {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .card-pic {
+        width: 100%;
+        max-height: 100%;
+        border: none;
+        overflow: hidden;
+        border-bottom: 1px solid rgb(163 163 163);
+    }
+
+    .artist-info-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .inner-text {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        height: 75px;
+    }
+
+    .inner-text p {
+        align-items: center;
+    }
+
+    .song-link {
+        border-top: 1px solid rgb(163 163 163);
+        background: rgb(229 229 229);
+        align-self: center;
+        width: 100%;
+        height: 25px;
+        font-size: 14px;
+        z-index: 999;    
+    }
+}

@@ -85,7 +85,6 @@ export class HomeComponent implements OnInit {
   
   apiCallLimit = 45;
   apiCallCount = 0;
-  errorMessage = '';
   numberOfRounds: number = 1
   numberOfChoices: number = 2
   selectedGenre: String = "";
@@ -131,7 +130,6 @@ export class HomeComponent implements OnInit {
       localStorage.setItem(TOKEN_KEY, JSON.stringify(newToken));
       this.authLoading = false;
       this.token = newToken.value;
-      // this.loadGenres(newToken.value);
     });
   }
 
@@ -169,11 +167,9 @@ export class HomeComponent implements OnInit {
         if (setting.name === settingName) {
           if(setting.name === "numOfRounds"){
             this.numberOfRounds = setting.amount
-            console.log("Number of Rounds changed to " + this.numberOfRounds)
           }
           if(setting.name === "numOfChoices"){
             this.numberOfChoices = setting.amount
-            console.log("Number of Artists changed to " + this.numberOfChoices)
 
           }
         }
@@ -185,8 +181,6 @@ export class HomeComponent implements OnInit {
     this.selectedGenre = selectedGenre;
     this.config.genre = this.selectedGenre;
     localStorage.setItem('config', JSON.stringify(this.config));
-    console.log(this.selectedGenre);
-    console.log(TOKEN_KEY);
   }
 
   @Output() emitter:EventEmitter<any> = new EventEmitter();
@@ -231,12 +225,10 @@ export class HomeComponent implements OnInit {
       try {
         previewUrl = response.tracks.items[0].preview_url;
       } catch (e) {
-        console.error('no preview found')
         this.apiCallCount++;
         continue;
       }
       if (previewUrl == null) {
-        console.error('no preview found')
         this.apiCallCount++;
         continue;
       } 
@@ -248,12 +240,10 @@ export class HomeComponent implements OnInit {
       try {
         spotifyUrl = response.tracks.items[0].external_urls.spotify;
       } catch (e) {
-        console.error('no track url found')
         this.apiCallCount++;
         continue;
       }
       if (previewUrl == null) {
-        console.error('no track url found')
         this.apiCallCount++;
         continue;
       } 
@@ -271,7 +261,6 @@ export class HomeComponent implements OnInit {
       try {
         picUrl = response.tracks.items[0].album.images[0].url;
       } catch (e) {
-          console.error('no image found')
           this.apiCallCount++;
           continue;
       }
@@ -299,7 +288,7 @@ export class HomeComponent implements OnInit {
       this.apiCallCount++;
     }
     if (this.apiCallCount >= this.apiCallLimit) {
-      this.errorMessage = 'oops! we have encountered a fatal error :(';
+      console.error('ApiCallLimit Reached');
     }
 
   }
@@ -341,7 +330,6 @@ export class HomeComponent implements OnInit {
       try {
         picUrl = response.tracks.items[0].album.images[0].url;
       } catch (e) {
-          console.error('no image found')
           this.apiCallCount++;
           continue;
       }

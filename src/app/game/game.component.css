@@ -79,3 +79,32 @@ h3 {
     font-size: xx-large;
     align-self: center;
 }
+
+@media only screen and (max-width: 600px) {
+    body {
+        padding-top: 10px !important; 
+    }
+
+    .game-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100vw;
+    }
+
+    .options-container {
+        padding-top: 30px;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    .counters {
+        right: 10px;
+        text-align: right;
+    }
+}
