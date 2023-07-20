@@ -68,10 +68,6 @@ img .card-pic {
 
 }
 
-.correct-answer-container {
-    /* align-self: flex-end; */
-}
-
 .correct-answer {
     overflow: hidden;
     white-space: nowrap;
@@ -134,7 +130,6 @@ button {
     font-size: 14px;
     z-index: 999;
     transition: .2s ease-in-out 0s;
-
 }
 
 .song-link:hover {
