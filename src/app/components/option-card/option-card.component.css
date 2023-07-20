@@ -36,10 +36,15 @@
     margin-bottom: 20px;
 }
 
+img .card-pic {
+    overflow: hidden;
+}
+
 .card-pic {
     width: 75px;
     height: 75px;
     border: none;
+    overflow: hidden;
 }
 
 .artist-name {

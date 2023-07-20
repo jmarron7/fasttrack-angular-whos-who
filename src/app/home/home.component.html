@@ -1,15 +1,15 @@
-<div id="body">
+<div class="home-container">
   <header>who's who?</header>
   <h3>Can you guess the artist?</h3>
   <div *ngIf="authLoading || configLoading || gameLoading">Loading...</div>
   <div *ngIf="!authLoading && !configLoading && !gameLoading">
-    <div id="setting-box">
-      <div id="setting-label-box">
+    <div class="setting-box">
+      <div class="setting-label-box">
         <div class="label">Genre:</div>
         <div class="label">Number of Rounds:</div>
         <div class="label">Number of Choices:</div>
       </div>
-      <div id="setting-option-box">
+      <div class="setting-option-box">
         <select [(ngModel)]="selectedGenre" (ngModelChange)="setGenre($event)" class="setting">
           <option [value]=""></option>
           <option [value]="genre" *ngFor="let genre of genres">
@@ -27,6 +27,6 @@
         ></app-setting>
       </div>
     </div>
-    <button (click)="handleStartGame()" id="start-button">Start Game</button>
+    <button (click)="handleStartGame()" class="start-button">Start Game</button>
   </div>
 </div>

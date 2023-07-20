@@ -1,3 +1,14 @@
+.results-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80vw;
+    box-sizing: border-box;
+    border: 1px dashed rgb(10 10 10);
+    margin-bottom: 10px;
+}
+
 .card-container {
     display: flex;
     flex-direction: row; 
@@ -6,7 +17,7 @@
     width: 300px;
     height: 125px;
     align-self: center;
-    justify-items: center;
+    justify-content: center;
     color: rgb(10 10 10);
     background-color: rgb(245 245 245);
     filter: drop-shadow(0px 0px 5px rgb(163 163 163));
@@ -21,10 +32,15 @@
     background-color: rgb(229 229 229);
 }
 
+img .card-pic {
+    overflow: hidden;
+}
+
 .card-pic {
     width: 75px;
     height: 75px;
-    border: 1px solid red;
+    border: none;
+    overflow: hidden;
 }
 
 .artist-name {
@@ -32,7 +48,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     align-self: center;
-    text-align: center;
 }
 
 .inner-text {
@@ -51,18 +66,32 @@
     font-size: 16px;
 }
 
-#top-box {
+.top-section {
     display: flex;
     flex-direction: column;
     justify-content: start;
 }
 
-#round-result {
-    display: flex;
-    flex-direction: row;
-    align-items: left;
+.mark {
+    margin-left: 5px;
+    margin-top: 3px;
 }
 
-#song-title {
+.round-result {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: baseline;
+}
+
+.song-title {
     justify-self: start;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50ch;
+}
+
+.round-heading {
+    align-self: center;
 }
