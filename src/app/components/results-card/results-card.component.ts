@@ -12,8 +12,10 @@ export class ResultsCardComponent implements OnInit {
    wasCorrect: boolean = false;
   title: string = "";
   picUrl: string = "";
+  spotifyUrl: string = "";
   guessedName: string = "";
   correctName:string = "";
+  oneTime: boolean = true;
 
   constructor() { }
 
@@ -22,7 +24,10 @@ export class ResultsCardComponent implements OnInit {
     this.guessedName = this.round.guessed;
     this.title = this.round.choice.trackTitle;
     this.picUrl = this.round.choice.picUrl;
+    this.spotifyUrl = this.round.choice.spotifyUrl;
     this.wasCorrect = this.correctName === this.guessedName;
+    console.log(this.spotifyUrl);
   }
+
 
 }

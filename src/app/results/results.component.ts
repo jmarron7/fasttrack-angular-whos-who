@@ -34,10 +34,11 @@ export class ResultsComponent implements OnInit {
       let choice: any = {
         guessedArtist: round.guessed,
         trackTitle: round.track.trackName,
+        spotifyUrl: round.track.spotifyUrl,
         picUrl: (() => {
           let name = round.guessed;
           return round.artistList.find((a: { name: string, picUrl: string }) => a.name === name).picUrl;
-        })(),
+        })()
       }
       let r: any = {
         choice: choice,

@@ -10,8 +10,9 @@
     <div class="card-container">
         <img class="card-pic" [src]="picUrl"/>
         <div class="inner-text">
-            <p class="artist-name"> {{ guessedName }}</p>
+            <p class="artist-name"> {{ guessedName }} </p>
             <p *ngIf="!wasCorrect" class="correct-answer"> Answer: {{ correctName }}</p>
         </div>
     </div>
+    <a href="{{spotifyUrl}}" target="_blank">listen on spotify</a>
 </div>

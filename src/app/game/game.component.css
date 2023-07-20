@@ -21,6 +21,17 @@ button img:not(#pause-button) {
     left: 5%;
 }
 
+.mark-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
 img #pause-button {
     align-self: center;
     left: 10%;
@@ -36,20 +47,9 @@ img #pause-button {
     padding: 0px 0px 0px 0px;
 }
 
-.image-placeholder {
-    box-sizing: border-box;
-    border: 1px solid rgb(10 10 10);
-    border-radius: 9999px;
-    width: 200px;
-    height: 200px;
-    background: rgb(163 163 163);
-    align-items: center;
-    justify-content: center;
-}
-
-
 .counters {
-    position: relative;
+    position: absolute;
+    right: 60px;
     text-align: right;
 }
 
@@ -60,6 +60,7 @@ img #pause-button {
     align-items: center;
     justify-content: space-evenly;
     width: 700px;
+    margin-bottom: 40px;
 }
 
 .round-result {
