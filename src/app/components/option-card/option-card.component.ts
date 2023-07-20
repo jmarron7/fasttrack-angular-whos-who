@@ -14,7 +14,6 @@ export class OptionCardComponent implements OnInit {
   @Output() chooseSelectedOption = new EventEmitter<string>()
   
   handleChoose() {
-    console.log("clicked on "+ this.artistName)
     this.chooseSelectedOption.emit()
   }
 

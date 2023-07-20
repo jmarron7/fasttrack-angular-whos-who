@@ -60,7 +60,6 @@ export class GameComponent implements OnInit {
   });
     this.sound.on('end', () => {
       this.isPlaying = false
-      console.log("Done for real")
     });
   }
 
@@ -94,7 +93,6 @@ export class GameComponent implements OnInit {
         score: this.score
       }
     };
-    console.log('navigating');
     this.router.navigate(['/results'], navigationExtras);
   }
 
