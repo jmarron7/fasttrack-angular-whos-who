@@ -223,6 +223,7 @@ export class HomeComponent implements OnInit {
       rounds: []
     };
     
+    let trackUrlSet = new Set<string>();
     while (this.game.rounds.length < this.numberOfRounds) {
       if (this.apiCallCount >= this.apiCallLimit) {
         break;
@@ -246,7 +247,10 @@ export class HomeComponent implements OnInit {
         this.apiCallCount++;
         continue;
       } 
-      console.log('preview found!')
+
+      if (trackUrlSet.has(previewUrl)) {
+        continue;
+      }
 
       let track = {
         artistName: response.tracks.items[0].artists[0].name.normalize(),
@@ -254,7 +258,7 @@ export class HomeComponent implements OnInit {
         trackName: response.tracks.items[0].name
       }
 
-      let artists = new Set<any>();
+      let artists: any[] = [];
       
       let picUrl = '';
       try {
@@ -273,10 +277,10 @@ export class HomeComponent implements OnInit {
         name: track.artistName,
         picUrl: picUrl
       }
-      artists.add(correctArtist);
+      artists.push(correctArtist);
 
       let wrongArtists = this.getWrongArtists(this.token, correctArtist.name);
-      (await wrongArtists).forEach((artist) => artists.add(artist));
+      (await wrongArtists).forEach((artist) => artists.push(artist));
 
       const shuffle = (array: string[]) => { 
         return array.sort(() => Math.random() - 0.5); 
@@ -308,6 +312,8 @@ export class HomeComponent implements OnInit {
   getWrongArtists = async (t: any, correctArtistName: string) => {
     this.configLoading = true;
     let artistList: any[] = [];
+    let artistNames = new Set<string>(); 
+    artistNames.add(correctArtistName);
     while (artistList.length < this.numberOfChoices - 1) {
       if (this.apiCallCount >= this.apiCallLimit) {
         break;
@@ -319,7 +325,7 @@ export class HomeComponent implements OnInit {
 
       let wrongArtistName = response.tracks.items[0].artists[0].name.normalize();
     
-      if (wrongArtistName === correctArtistName) {
+      if (artistNames.has(wrongArtistName)) {
         this.apiCallCount++;
         continue;
       }
@@ -341,9 +347,7 @@ export class HomeComponent implements OnInit {
         name: wrongArtistName,
         picUrl: pictureUrl
       }
-      if (artistList.filter((a: {name: string, picUrl: string}) => a.name === artist.name || a.picUrl === artist.picUrl).length === 0) {
-        artistList.push(artist);
-      }
+      artistList.push(artist);
     }
     this.apiCallCount++;
     return artistList;
