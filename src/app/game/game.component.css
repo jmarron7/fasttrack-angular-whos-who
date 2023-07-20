@@ -21,17 +21,6 @@ button img:not(#pause-button) {
     left: 5%;
 }
 
-.mark-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: 1px solid black;
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-}
-
 img #pause-button {
     align-self: center;
     left: 10%;
@@ -63,13 +52,30 @@ img #pause-button {
     margin-bottom: 40px;
 }
 
-.round-result {
-    position: relative;
+.invisible {
+    visibility: hidden;
+}
+
+.visible, .invisible {
+    margin-top: 35px;
+}
+
+.result {
+    margin-left: 30px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-    padding: 0px 0px 0px 0px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 200px;
+    height: 150px;
+}
+
+.mark {
+    margin-left: 10px;
+    align-self: center;
+}
+
+h3 {
+    font-size: xx-large;
+    align-self: center;
 }

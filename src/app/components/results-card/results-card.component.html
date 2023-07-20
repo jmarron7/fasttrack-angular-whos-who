@@ -1,7 +1,7 @@
 <div class="results-container">
     <div class="top-section">
         <div class="round-result">
-            <h3 class="round-heading">Round {{ index + 1 }}:</h3>
+            <h3>Round {{ index + 1 }}:</h3>
             <img *ngIf="wasCorrect" class="mark" src="../../../assets/correct.png" width=20 height=20/>
             <img *ngIf="!wasCorrect" class="mark" src="../../../assets/wrong.png" width=20 height=20/>
         </div>
