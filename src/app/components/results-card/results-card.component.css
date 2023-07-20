@@ -5,7 +5,6 @@
     justify-content: center;
     width: 80vw;
     box-sizing: border-box;
-    /* border: 1px dashed rgb(10 10 10); */
     margin-bottom: 10px;
 }
 
@@ -16,7 +15,7 @@
     border: 1px solid rgb(10 10 10);
     width: 300px;
     height: 125px;
-    align-self: center;
+    align-content: center;
     justify-content: center;
     color: rgb(10 10 10);
     background-color: rgb(245 245 245);
@@ -69,8 +68,9 @@ img .card-pic {
 .top-section {
     display: flex;
     flex-direction: column;
-    align-items: left;
-    width: 300px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 400px;
 }
 
 .mark {
@@ -81,19 +81,24 @@ img .card-pic {
 .round-result {
     display: flex;
     flex-direction: row;
-    align-items: left;
-    justify-content: baseline;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.song-title-container {
+  width: 400px;
 }
 
 .song-title {
+    font-size: 16px;
     font-weight: 400;
-    /* justify-self: start; */
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 50ch;
+    white-space: nowrap;
+    max-width: 400px;
+    flex-shrink: 0;
 }
 
 .round-heading {
-    align-self: center;
+    /* align-self: center; */
 }
