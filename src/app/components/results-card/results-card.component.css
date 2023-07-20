@@ -5,7 +5,7 @@
     justify-content: center;
     width: 80vw;
     box-sizing: border-box;
-    border: 1px dashed rgb(10 10 10);
+    /* border: 1px dashed rgb(10 10 10); */
     margin-bottom: 10px;
 }
 
@@ -69,7 +69,8 @@ img .card-pic {
 .top-section {
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    align-items: left;
+    width: 300px;
 }
 
 .mark {
@@ -80,12 +81,13 @@ img .card-pic {
 .round-result {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: left;
     justify-content: baseline;
 }
 
 .song-title {
-    justify-self: start;
+    font-weight: 400;
+    /* justify-self: start; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
