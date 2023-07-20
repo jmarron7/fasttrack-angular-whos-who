@@ -235,20 +235,33 @@ export class HomeComponent implements OnInit {
         this.apiCallCount++;
         continue;
       }
-
       if (previewUrl == null) {
         console.error('no preview found')
         this.apiCallCount++;
         continue;
       } 
-
       if (trackUrlSet.has(previewUrl)) {
         continue;
       }
 
+      let spotifyUrl = '';
+      try {
+        spotifyUrl = response.tracks.items[0].external_urls.spotify;
+      } catch (e) {
+        console.error('no track url found')
+        this.apiCallCount++;
+        continue;
+      }
+      if (previewUrl == null) {
+        console.error('no track url found')
+        this.apiCallCount++;
+        continue;
+      } 
+
       let track = {
         artistName: response.tracks.items[0].artists[0].name.normalize(),
-        previewUrl: response.tracks.items[0].preview_url,
+        previewUrl: previewUrl,
+        spotifyUrl: spotifyUrl,
         trackName: response.tracks.items[0].name
       }
 
@@ -256,15 +269,11 @@ export class HomeComponent implements OnInit {
       
       let picUrl = '';
       try {
-        picUrl = response.tracks.items[0].artists[0].images[0].url;
+        picUrl = response.tracks.items[0].album.images[0].url;
       } catch (e) {
-        try {
-          picUrl = response.tracks.items[0].album.images[0].url
-        } catch (e) {
           console.error('no image found')
           this.apiCallCount++;
           continue;
-        }
       }
 
       let correctArtist = {
@@ -326,22 +335,18 @@ export class HomeComponent implements OnInit {
 
       artistNames.add(wrongArtistName);
 
-      let pictureUrl = '';
+      let picUrl = '';
       try {
-        pictureUrl = response.tracks.items[0].artists[0].images[0].url;
-      } catch (e) {   
-          try {
-            pictureUrl = response.tracks.items[0].album.images[0].url
-          } catch (e) {
-            console.error('no image found')
-            this.apiCallCount++;
-            continue;
-          }
-        }
+        picUrl = response.tracks.items[0].album.images[0].url;
+      } catch (e) {
+          console.error('no image found')
+          this.apiCallCount++;
+          continue;
+      }
 
       let artist = {
         name: wrongArtistName,
-        picUrl: pictureUrl
+        picUrl: picUrl
       }
       artistList.push(artist);
     }

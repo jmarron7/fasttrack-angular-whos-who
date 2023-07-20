@@ -65,12 +65,14 @@ export class GameComponent implements OnInit {
   chooseOption(optionGuessed: string) {
     GameComponent.bind(this)
     this.game.rounds[this.currentRound].guessed = optionGuessed
-    if(optionGuessed === this.game.rounds[this.currentRound].correct) {
-      this.isCorrect = true;      
-      this.score++
-    } else {
-      this.isCorrect = false;
-    }
+      if (!this.hasChosen) {
+        if(optionGuessed === this.game.rounds[this.currentRound].correct) {
+          this.isCorrect = true;      
+          this.score++
+        } else {
+          this.isCorrect = false;
+        }
+    } 
     this.sound.stop();
     this.isPlaying = false;
     this.hasChosen = true;

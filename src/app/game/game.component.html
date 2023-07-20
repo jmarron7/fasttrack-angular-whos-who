@@ -13,24 +13,16 @@
         </button>
     </div>
 
-    <div id="round-result" *ngIf="hasChosen">
-        <div *ngIf="isCorrect">
-            <img src="../../assets/correct.png" width=100 height=100 />
+    <div *ngIf="hasChosen">
+        <div class="mark-container" *ngIf="isCorrect">
+            <img class="mark" src="../../assets/correct.png" width=100 height=100 />
         </div>
-        <div *ngIf="!isCorrect">
-            <img src="../../assets/wrong.png" width=100 height=100 />
+        <div class="mark-container" *ngIf="!isCorrect">
+            <img class="mark" src="../../assets/wrong.png" width=100 height=100 />
         </div>
-
-        <button id="next-round-button" *ngIf = "currentRound < totalRounds - 1" (click)="nextRound()">
-            Next Round
-        </button>
-        <button id="see-results-button" *ngIf = "currentRound >= totalRounds - 1" (click)="goToResults()">
-            See Results
-        </button>
-
     </div>
     
-    <div class="options-container options-column" *ngIf="!hasChosen">
+    <div class="options-container options-column">
         <app-option-card
         *ngFor="let artist of this.game.rounds[currentRound].artistList"
         artistName="{{ artist.name }}" 
@@ -38,5 +30,14 @@
         (chooseSelectedOption)="chooseOption(artist.name)"
         [hasChosen]="hasChosen"
         ></app-option-card>
+    </div>
+
+    <div *ngIf="hasChosen">
+        <button id="next-round-button" *ngIf = "currentRound < totalRounds - 1" (click)="nextRound()">
+            Next Round
+        </button>
+        <button id="see-results-button" *ngIf = "currentRound >= totalRounds - 1" (click)="goToResults()">
+            See Results
+        </button>
     </div>
 </div>
