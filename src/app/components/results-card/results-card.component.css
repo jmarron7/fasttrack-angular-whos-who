@@ -4,42 +4,27 @@
     box-sizing: border-box;
     border: 1px solid rgb(10 10 10);
     width: 300px;
-    height: 75px;
+    height: 125px;
     align-self: center;
     justify-items: center;
+    color: rgb(10 10 10);
     background-color: rgb(245 245 245);
     filter: drop-shadow(0px 0px 5px rgb(163 163 163));
     transition: .2s ease-in-out 0s;
     flex-basis: 50%;
     flex-grow: 1;
+    margin-top: 10px;
     margin-bottom: 20px;
 }
 
 .card-container:hover {
     background-color: rgb(229 229 229);
-    cursor: pointer;
-}
-
-.alt-card-container {
-    display: flex;
-    flex-direction: row; 
-    box-sizing: border-box;
-    border: 1px solid rgb(10 10 10);
-    width: 300px;
-    height: 75px;
-    align-self: center;
-    justify-items: center;
-    background-color: rgb(245 245 245);
-    filter: drop-shadow(0px 0px 5px rgb(163 163 163));
-    flex-basis: 50%;
-    flex-grow: 1;
-    margin-bottom: 20px;
 }
 
 .card-pic {
     width: 75px;
     height: 75px;
-    border: none;
+    border: 1px solid red;
 }
 
 .artist-name {
@@ -48,4 +33,36 @@
     text-overflow: ellipsis;
     align-self: center;
     text-align: center;
+}
+
+.inner-text {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.inner-text p {
+    align-self: center;
+}
+
+.correct-answer {
+    align-self: flex-end;
+    font-size: 16px;
+}
+
+#top-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+#round-result {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+}
+
+#song-title {
+    justify-self: start;
 }

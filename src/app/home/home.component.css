@@ -1,9 +1,13 @@
 header {
-    font-size: xx-large;
+    font-size: 48px;
+    letter-spacing: 6px;
+    font-weight: 600;
+    padding-bottom: 10px;
 }
 
 h3 {
     font-size: large;
+    padding-bottom: 10px;
 }
 
 #body {
@@ -16,8 +20,7 @@ h3 {
 
 #start-button {
     margin-top: 20px;
-    width: 100px;
-    height: 40px;
+    width: 150px;
 }
 
 #setting-box {
@@ -33,6 +36,7 @@ h3 {
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
+    align-items: end;
     text-align: right;
     margin-right: 10px;
     height: 200px;

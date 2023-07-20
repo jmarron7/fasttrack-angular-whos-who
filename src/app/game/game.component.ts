@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 const { Howl } = require('howler');
 
 @Component({
@@ -9,10 +9,8 @@ const { Howl } = require('howler');
 })
 export class GameComponent implements OnInit {
 
-  // buttonLabel = "Play Song"
   isPlaying = false
   game: any = {
-    correctTtracks: [],
     rounds: []
   };
   
@@ -25,6 +23,7 @@ export class GameComponent implements OnInit {
     volume: 0.5,
   });
   hasChosen = false;
+  isCorrect = false;
 
   constructor(private router: Router) {
     let input = this.router.getCurrentNavigation();
@@ -67,10 +66,31 @@ export class GameComponent implements OnInit {
     GameComponent.bind(this)
     this.game.rounds[this.currentRound].guessed = optionGuessed
     if(optionGuessed === this.game.rounds[this.currentRound].correct) {
-      console.log("Correct!")
+      this.isCorrect = true;      
       this.score++
+    } else {
+      this.isCorrect = false;
     }
+    this.sound.stop();
+    this.isPlaying = false;
     this.hasChosen = true;
+  }
+
+  nextRound() {
+    this.hasChosen = false;
+    this.currentRound++
+    this.setSound();
+  }
+
+  goToResults() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        game: this.game,
+        score: this.score
+      }
+    };
+    console.log('navigating');
+    this.router.navigate(['/results'], navigationExtras);
   }
 
 }

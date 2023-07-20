@@ -21,7 +21,6 @@ interface Setting {
 })
 export class HomeComponent implements OnInit {
   game: any = {
-    correctTracks: [],
     rounds: []
   };
   
@@ -150,7 +149,7 @@ export class HomeComponent implements OnInit {
         if (setting.name === settingName) {
           setting.amount = setting.amount < setting.max
             ? (setting.amount + 1)
-            : (setting.amount);
+            : (setting.max);
           
           this.updateGameSettings(settingName)
         }
@@ -163,7 +162,7 @@ export class HomeComponent implements OnInit {
     if (this.settings.find((setting) => setting.name === settingName)) {
       this.settings.forEach((setting) => {
         if (setting.name === settingName) {
-          setting.amount = setting.amount > setting.min ? (setting.amount - 1) : setting.amount
+          setting.amount = setting.amount > setting.min ? (setting.amount - 1) : setting.min
           this.updateGameSettings(settingName)
         }
       })
@@ -221,11 +220,8 @@ export class HomeComponent implements OnInit {
 
     this.apiCallCount = 0;
     this.game = {
-      correctTracks: [],
       rounds: []
     };
-
-    let correctTracksSet = new Set<any>()
     
     while (this.game.rounds.length < this.numberOfRounds) {
       if (this.apiCallCount >= this.apiCallLimit) {
@@ -235,7 +231,7 @@ export class HomeComponent implements OnInit {
         token: t,
         endpoint: this.createSearchQuery()
       });
-      
+
       let previewUrl = '';
       try {
         previewUrl = response.tracks.items[0].preview_url;
@@ -253,11 +249,10 @@ export class HomeComponent implements OnInit {
       console.log('preview found!')
 
       let track = {
-        artistName: response.tracks.items[0].artists[0].name,
+        artistName: response.tracks.items[0].artists[0].name.normalize(),
         previewUrl: response.tracks.items[0].preview_url,
         trackName: response.tracks.items[0].name
       }
-      this.game.correctTracks.push(Array.from(correctTracksSet.add(track)));
 
       let artists = new Set<any>();
       
@@ -280,17 +275,17 @@ export class HomeComponent implements OnInit {
       }
       artists.add(correctArtist);
 
-      let wrongArtists = this.getWrongArtists(this.token, track.artistName);
+      let wrongArtists = this.getWrongArtists(this.token, correctArtist.name);
       (await wrongArtists).forEach((artist) => artists.add(artist));
 
       const shuffle = (array: string[]) => { 
         return array.sort(() => Math.random() - 0.5); 
-    }; 
+      }; 
 
       let round = {
         artistList: shuffle(Array.from(artists)),
         track: track,
-        correct: track.artistName,
+        correct: correctArtist.name,
         guessed: ''
       }
       this.game.rounds.push(round);
@@ -310,10 +305,10 @@ export class HomeComponent implements OnInit {
     return searchQuery;
   }
 
-  getWrongArtists = async (t: any, providedName: string) => {
+  getWrongArtists = async (t: any, correctArtistName: string) => {
     this.configLoading = true;
-    let artistSet = new Set<any>();
-    while (artistSet.size < this.numberOfChoices - 1) {
+    let artistList: any[] = [];
+    while (artistList.length < this.numberOfChoices - 1) {
       if (this.apiCallCount >= this.apiCallLimit) {
         break;
       }
@@ -322,9 +317,9 @@ export class HomeComponent implements OnInit {
         endpoint: this.createSearchQuery()
       });
 
-      let artistName = response.tracks.items[0].artists[0].name;
+      let wrongArtistName = response.tracks.items[0].artists[0].name.normalize();
     
-      if (artistName === providedName) {
+      if (wrongArtistName === correctArtistName) {
         this.apiCallCount++;
         continue;
       }
@@ -343,12 +338,14 @@ export class HomeComponent implements OnInit {
         }
 
       let artist = {
-        name: artistName,
+        name: wrongArtistName,
         picUrl: pictureUrl
       }
-      artistSet.add(artist);
+      if (artistList.filter((a: {name: string, picUrl: string}) => a.name === artist.name || a.picUrl === artist.picUrl).length === 0) {
+        artistList.push(artist);
+      }
     }
     this.apiCallCount++;
-    return artistSet;
+    return artistList;
   }
 }

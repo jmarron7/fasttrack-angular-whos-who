@@ -1,5 +1,5 @@
 <div id="body">
-  <header>Who's Who?</header>
+  <header>who's who?</header>
   <h3>Can you guess the artist?</h3>
   <div *ngIf="authLoading || configLoading || gameLoading">Loading...</div>
   <div *ngIf="!authLoading && !configLoading && !gameLoading">
@@ -27,6 +27,6 @@
         ></app-setting>
       </div>
     </div>
+    <button (click)="handleStartGame()" id="start-button">Start Game</button>
   </div>
-  <button (click)="handleStartGame()" id="start-button">Start Game</button>
 </div>

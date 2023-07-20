@@ -3,12 +3,34 @@
     <div>score: {{ score }}/{{ totalRounds }}</div>
 </div>
 <div class="game-container">
-    <div class="image-placeholder">
-        <h1>?</h1>
+
+    <div *ngIf="!hasChosen">
+        <button (click)="handlePlayTrack()" *ngIf="!isPlaying">
+            <img id="play-button" src="../../assets/play.png" width=100 height=100 />
+        </button>
+        <button (click)="handlePlayTrack()" *ngIf="isPlaying">
+            <img id="pause-button" src="../../assets/pause.png" width=100 height=100 />
+        </button>
     </div>
-    <button (click)="handlePlayTrack()" *ngIf="!isPlaying">Play Song</button>
-    <button (click)="handlePlayTrack()" *ngIf="isPlaying">Pause Song</button>
-    <div class="options-container options-column">
+
+    <div id="round-result" *ngIf="hasChosen">
+        <div *ngIf="isCorrect">
+            <img src="../../assets/correct.png" width=100 height=100 />
+        </div>
+        <div *ngIf="!isCorrect">
+            <img src="../../assets/wrong.png" width=100 height=100 />
+        </div>
+
+        <button id="next-round-button" *ngIf = "currentRound < totalRounds - 1" (click)="nextRound()">
+            Next Round
+        </button>
+        <button id="see-results-button" *ngIf = "currentRound >= totalRounds - 1" (click)="goToResults()">
+            See Results
+        </button>
+
+    </div>
+    
+    <div class="options-container options-column" *ngIf="!hasChosen">
         <app-option-card
         *ngFor="let artist of this.game.rounds[currentRound].artistList"
         artistName="{{ artist.name }}" 

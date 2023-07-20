@@ -1,0 +1,15 @@
+<div id="top-box">
+    <div id="round-result">
+        <h3>Round {{ index + 1 }}:</h3>
+        <img *ngIf="wasCorrect" class="??" src="../../../assets/correct.png" width=20 height=20/>
+        <img *ngIf="!wasCorrect" class="mark" src="../../../assets/wrong.png" width=20 height=20/>
+    </div>
+    <h3 id="song-name">Song name: {{ title }}</h3>
+</div>
+<div class="card-container">
+    <img class="card-pic" [src]="picUrl"/>
+    <div class="inner-text">
+        <p class="artist-name"> {{ guessedName }}</p>
+        <p *ngIf="!wasCorrect" class="correct-answer"> Correct was: {{ correctName }}</p>
+    </div>
+</div>
