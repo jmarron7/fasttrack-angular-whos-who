@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-whos-who",
+            "outputPath": "dist/whos-who",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-whos-who:build:production"
+              "browserTarget": "whos-who:build:production"
             },
             "development": {
-              "browserTarget": "angular-whos-who:build:development"
+              "browserTarget": "whos-who:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +75,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-whos-who:build"
+            "browserTarget": "whos-who:build"
           }
         },
         "test": {
