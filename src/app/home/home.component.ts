@@ -282,7 +282,7 @@ export class HomeComponent implements OnInit {
       }
       artists.push(correctArtist);
 
-      let wrongArtists = this.getWrongArtists(this.token, correctArtist.name);
+      let wrongArtists = this.getWrongArtists(this.token, correctArtist.name, correctArtist.picUrl);
       (await wrongArtists).forEach((artist) => artists.push(artist));
 
       const shuffle = (array: string[]) => { 
@@ -312,11 +312,13 @@ export class HomeComponent implements OnInit {
     return searchQuery;
   }
 
-  getWrongArtists = async (t: any, correctArtistName: string) => {
+  getWrongArtists = async (t: any, correctArtistName: string, correctPicUrl: string) => {
     this.configLoading = true;
     let artistList: any[] = [];
     let artistNames = new Set<string>(); 
     artistNames.add(correctArtistName);
+    let picUrls = new Set<string>(); 
+    picUrls.add(correctPicUrl);
     while (artistList.length < this.numberOfChoices - 1) {
       if (this.apiCallCount >= this.apiCallLimit) {
         break;
@@ -340,6 +342,11 @@ export class HomeComponent implements OnInit {
         picUrl = response.tracks.items[0].album.images[0].url;
       } catch (e) {
           console.error('no image found')
+          this.apiCallCount++;
+          continue;
+      }
+      
+      if (picUrls.has(picUrl)) {
           this.apiCallCount++;
           continue;
       }
