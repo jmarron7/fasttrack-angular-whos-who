@@ -27,6 +27,7 @@
         ></app-setting>
       </div>
     </div>
-    <button (click)="handleStartGame()" class="start-button">Start Game</button>
+    <button (click)="handleStartGame()" *ngIf="hasSelectedGenre">Start Game</button>
+    <button *ngIf="!hasSelectedGenre" disabled>Start Game</button>
   </div>
 </div>

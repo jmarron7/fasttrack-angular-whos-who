@@ -87,6 +87,7 @@ export class HomeComponent implements OnInit {
   apiCallCount = 0;
   numberOfRounds: number = 1
   numberOfChoices: number = 2
+  hasSelectedGenre: boolean = false;
   selectedGenre: String = "";
   authLoading: boolean = false;
   configLoading: boolean = false;
@@ -105,6 +106,11 @@ export class HomeComponent implements OnInit {
       this.selectedGenre = this.config.genre;
       this.settings[0].amount = this.numberOfRounds;
       this.settings[1].amount = this.numberOfChoices;
+      if (this.selectedGenre.length === 0) {
+        this.hasSelectedGenre = false;
+      } else {
+        this.hasSelectedGenre = true;
+      }
     }
     localStorage.setItem('config', JSON.stringify(this.config));
     this.configLoading = false;
@@ -131,6 +137,7 @@ export class HomeComponent implements OnInit {
       this.authLoading = false;
       this.token = newToken.value;
     });
+
   }
 
   // SETTINGS FUNCTIONS
@@ -178,7 +185,16 @@ export class HomeComponent implements OnInit {
   }
  
   setGenre(selectedGenre: any) {
-    this.selectedGenre = selectedGenre;
+    console.log(selectedGenre)
+    console.log(selectedGenre.length)
+    if(selectedGenre.length === 0) {
+      this.hasSelectedGenre = false;
+      this.selectedGenre = ''
+    } else {
+      this.hasSelectedGenre = true;
+      this.selectedGenre = selectedGenre;
+    }
+
     this.config.genre = this.selectedGenre;
     localStorage.setItem('config', JSON.stringify(this.config));
   }
